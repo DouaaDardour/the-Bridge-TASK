@@ -1,0 +1,42 @@
+import 'package:provider/provider.dart';
+import '../models/item.dart'; 
+
+class MyApp extends ChangeNotifierProvider<List<Item>> {
+  MyApp() {
+    _items = [
+      Item(id: '1', name: 'First Item'),
+      Item(id: '2', name: 'Second Item'),
+      
+    ];
+  }
+
+  List<Item> _items = [];
+
+  @override
+  List<Item> get provider => _items;
+
+  void addItem(String id, String name) {
+    final newItem = Item(id: id, name: name);
+    _items.insert(0, newItem);
+    notifyListeners();
+  }
+
+  bool removeItemById(String id) {
+    final indexToRemove = _items.indexWhere((element) => element.id == id);
+    if (indexToRemove >= 0 && indexToRemove < _items.length) {
+      _items.removeAt(indexToRemove);
+      notifyListeners();
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  void updateItemName(String id, String updatedName) {
+    final targetIndex = _items.indexWhere((element) => element.id == id);
+    if (targetIndex >= 0 && targetIndex < _items.length) {
+      _items[targetIndex].name = updatedName;
+      notifyListeners();
+    }
+  }
+}
