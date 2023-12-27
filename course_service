@@ -1,0 +1,35 @@
+import 'dart:convert';
+import 'package:http/http.dart' as http;
+
+List<dynamic> _mockCoursesData = [];
+final List<Course> _mockCourses = <Course>[];
+
+Future<void> loadMockCourses() async {
+  var response = await http.get(Uri.parse('https://jsonplaceholder.typicode.com/posts'));
+  if (response.statusCode == 200) {
+    _mockCoursesData = jsonDecode(response.body);
+    _mockCourses.clear();
+    for (var data in _mockCoursesData) {
+      _mockCourses.add(Course.fromJson(data));
+    }
+  } else {
+    throw Exception('Failed to load initial data');
+  }
+}
+
+int _counter = 1;
+
+void addNewCourse(Course course) {
+  course.id = _counter++;
+  _mockCourses.add(course);
+}
+
+void updateCourse(Course updatedCourse) {
+  int indexToUpdate = _mockCourses.indexWhere((element) => element.id == updatedCourse.id);
+  if (indexToUpdate != -1) {
+    _mockCourses[indexToUpdate] = updatedCourse;
+  }
+}
+
+void deleteCourseById(int id) {
+  int indexToDelete = _mockCourses.
