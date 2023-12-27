@@ -1,0 +1,12 @@
+void main() {
+  runApp(
+    ChangeNotifierProvider<List<Item>>(
+      create: (_) => MyApp(),
+      child: MaterialApp(
+        title: 'CRUD functions ',
+        theme: ThemeData(primarySwatch: Colors.blue),
+        home: HomeScreen(),
+      ),
+    ),
+  );
+}
